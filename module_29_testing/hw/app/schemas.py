@@ -1,6 +1,8 @@
-from pydantic import BaseModel
-from typing import Optional
 from datetime import datetime
+from typing import Optional
+
+from pydantic import BaseModel
+
 
 class ClientBase(BaseModel):
     name: str
@@ -8,13 +10,17 @@ class ClientBase(BaseModel):
     credit_card: Optional[str] = None
     car_number: Optional[str] = None
 
+
 class ClientCreate(ClientBase):
     pass
 
+
 class ClientOut(ClientBase):
     id: int
+
     class Config:
         orm_mode = True
+
 
 class ParkingBase(BaseModel):
     address: str
@@ -22,10 +28,13 @@ class ParkingBase(BaseModel):
     count_places: int
     count_available_places: int
 
+
 class ParkingCreate(ParkingBase):
     pass
 
+
 class ParkingOut(ParkingBase):
     id: int
+
     class Config:
         orm_mode = True

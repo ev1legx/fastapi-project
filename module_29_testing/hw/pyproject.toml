@@ -1,0 +1,12 @@
+[tool.isort]
+skip = ["Python-3.11.0"]
+profile = "black"
+line_length = 79
+
+
+[tool.black]
+exclude = '''
+/(
+    Python-3\.11\.0
+)/
+'''
