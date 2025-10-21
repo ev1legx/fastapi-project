@@ -25,16 +25,16 @@ jobs:
           pip install flake8 black isort mypy pytest
 
       - name: Run flake8
-        run: flake8 app tests
+        run: flake8 module_29_testing/hw/app module_29_testing/hw/tests
 
       - name: Run isort check
-        run: isort --check-only app tests
+        run: isort --check-only module_29_testing/hw/app module_29_testing/hw/tests
 
       - name: Run black check
-        run: black --check app tests
+        run: black --check module_29_testing/hw/app module_29_testing/hw/tests
 
       - name: Run mypy
-        run: mypy app
+        run: mypy module_29_testing/hw/app
 
       - name: Run pytest
-        run: pytest --maxfail=1 --disable-warnings -q
+        run: pytest --maxfail=1 --disable-warnings -q module_29_testing/hw/tests
