@@ -1,27 +1,14 @@
-import os
+from fastapi import FastAPI
 
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from .database import Base, engine
+from .routes import router
 
-db = SQLAlchemy()
+app = FastAPI()
 
 
-def create_app():
-    app = Flask(__name__)
+@app.on_event("startup")
+def on_startup():
+    Base.metadata.create_all(bind=engine)
 
-    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-    db_path = os.path.join(BASE_DIR, "parking.db")
-    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
 
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-    db.init_app(app)
-
-    from .routes import bp
-
-    app.register_blueprint(bp)
-
-    with app.app_context():
-        db.create_all()
-
-    return app
+app.include_router(router)
