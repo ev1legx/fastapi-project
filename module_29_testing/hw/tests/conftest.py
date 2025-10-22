@@ -1,8 +1,9 @@
 import pytest
 from fastapi.testclient import TestClient
-from app.database import Base, get_db, engine, SessionLocal
-from app.models import ClientParking, Client, Parking
+
+from app.database import Base, SessionLocal, engine, get_db
 from app.main import app
+from app.models import Client, ClientParking, Parking
 
 
 @pytest.fixture(scope="session", autouse=True)

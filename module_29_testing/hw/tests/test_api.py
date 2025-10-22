@@ -1,6 +1,8 @@
-import pytest
 from datetime import datetime
-from app.models import Client, Parking, ClientParking
+
+import pytest
+
+from app.models import Client, ClientParking, Parking
 
 
 @pytest.fixture
