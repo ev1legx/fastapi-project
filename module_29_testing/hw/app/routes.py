@@ -1,3 +1,4 @@
+
 from datetime import datetime
 from typing import List
 
@@ -20,7 +21,8 @@ def get_clients(db: Session = Depends(get_db)):
 def get_client(client_id: int, db: Session = Depends(get_db)):
     client = db.query(Client).get(client_id)
     if not client:
-        raise HTTPException(status_code=404, detail="Client not found")
+        raise HTTPException(status_code=404,
+                            detail="Client not found")
     return client
 
 
@@ -49,12 +51,14 @@ def parking_entry(client_id: int, parking_id: int, db: Session = Depends(get_db)
     parking = db.query(Parking).get(parking_id)
     if not parking or not parking.opened or parking.count_available_places <= 0:
         raise HTTPException(
-            status_code=400, detail="Parking closed or no available places"
+            status_code=400,
+            detail="Parking closed or no available places"
         )
 
     client = db.query(Client).get(client_id)
     if not client:
-        raise HTTPException(status_code=404, detail="Client not found")
+        raise HTTPException(status_code=404,
+                            detail="Client not found")
 
     cp = (
         db.query(ClientParking)
@@ -62,7 +66,8 @@ def parking_entry(client_id: int, parking_id: int, db: Session = Depends(get_db)
         .first()
     )
     if cp:
-        raise HTTPException(status_code=400, detail="Client already parked here")
+        raise HTTPException(status_code=400,
+                            detail="Client already parked here")
 
     parking.count_available_places -= 1
     cp = ClientParking(
@@ -82,16 +87,19 @@ def parking_exit(client_id: int, parking_id: int, db: Session = Depends(get_db))
         .first()
     )
     if not cp:
-        raise HTTPException(status_code=404, detail="No active parking found")
+        raise HTTPException(status_code=404,
+                            detail="No active parking found")
 
     client = db.query(Client).get(client_id)
     if not client or not client.credit_card:
-        raise HTTPException(status_code=400, detail="No credit card linked")
+        raise HTTPException(status_code=400,
+                            detail="No credit card linked")
 
     cp.time_out = datetime.utcnow()
-    if cp.time_out < cp.time_in:
+    if cp.time_in is not None and cp.time_out < cp.time_in:
         raise HTTPException(
-            status_code=400, detail="Time out cannot be earlier than time in"
+            status_code=400,
+            detail="Time out cannot be earlier than time in"
         )
 
     parking = db.query(Parking).get(parking_id)
